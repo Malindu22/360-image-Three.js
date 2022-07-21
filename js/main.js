@@ -44,6 +44,9 @@ function newscene() {
     addSceneChangeCube();
     lat = 0;
     lon = 0;
+    setTimeout(() => {
+        document.body.removeAttribute('id');
+    }, 1200);
 }
 // create scene
 newscene();
@@ -132,9 +135,10 @@ function select(e) {
     for (let i = 0; i < intersect.length; i++) {
         if (intersect[i].object.id == cubeId) {
             intersect[i].object.material.color.set(0xFF0000);
+            document.body.id ="faded";
             setTimeout(() => {
                 newscene();
-            }, 1000);
+            }, 500);
         }
     }
 }
