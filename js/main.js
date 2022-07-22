@@ -35,7 +35,7 @@ function newscene() {
     }
     console.log(scene)
     let geometry = new THREE.SphereGeometry(500, 60, 40);
-    let defaultImage = scene.name == 'scene1' ? 'asset/img2.jpg' : 'asset/img.jpg';
+    let defaultImage = scene.name == 'scene1' ? 'asset/img3.jpg' : 'asset/img.jpg';
     const texture = new THREE.TextureLoader().load(defaultImage);
     const material = new THREE.MeshBasicMaterial({ map: texture });
     const mesh = new THREE.Mesh(geometry, material);
