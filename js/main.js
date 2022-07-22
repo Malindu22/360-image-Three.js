@@ -1,6 +1,8 @@
 
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-
+camera.fov = 90;
+camera.zoom = 0.8;
+camera.updateProjectionMatrix();
 const renderer = new THREE.WebGLRenderer();
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -35,15 +37,20 @@ function newscene() {
     }
     console.log(scene)
     let geometry = new THREE.SphereGeometry(500, 60, 40);
-    let defaultImage = scene.name == 'scene1' ? 'asset/img3.jpg' : 'asset/img.jpg';
+    let defaultImage = scene.name == 'scene1' ? 'asset/img0.jpg' : 'asset/img1.jpg';
     const texture = new THREE.TextureLoader().load(defaultImage);
     const material = new THREE.MeshBasicMaterial({ map: texture });
     const mesh = new THREE.Mesh(geometry, material);
     geometry.scale(- 1, 1, 1);
     scene.add(mesh);
     addSceneChangeCube();
-    lat = 0;
-    lon = 0;
+    if (scene.name == 'scene2') {
+        lat = 0;
+        lon = lon - 100;
+    }else{
+        lat = 0;
+        lon = lon +100;
+    }
     setTimeout(() => {
         document.body.removeAttribute('id');
     }, 1200);
@@ -56,10 +63,15 @@ newscene();
 // cube add to scene
 
 function addSceneChangeCube() {
-    const cubeGeo = new THREE.BoxGeometry(2, 2, 2);
+    const cubeGeo = new THREE.BoxGeometry(4, 4, 4);
     const cubeMat = new THREE.MeshBasicMaterial({ color: 0xff00ff });
     cube = new THREE.Mesh(cubeGeo, cubeMat);
-    cube.position.set(-30, -20, 50);
+    let x,y,z;
+    x = scene.name == 'scene2' ? 5 : -50;
+    y = scene.name == 'scene2' ? 20 : -10;
+    z = scene.name == 'scene2' ? -60 : 0;
+    cube.position.set(x,y,z);
+    console.log(scene.name)
     scene.add(cube);
     cubeId = cube.id;
 }
@@ -127,8 +139,10 @@ window.addEventListener('click', function (e) {
 function select(e) {
     rayCaster.setFromCamera(mousepos, camera);
     const intersect = rayCaster.intersectObjects(scene.children, true);
-    console.log(intersect);
-    console.log(cubeId);
+    // console.log(intersect);
+    // console.log(cubeId);
+    // console.log(lon,lat);
+    // camera.position.lerpVectors(camera.position, intersect[ 0 ].point, 0.5)
     if (e.ctrlKey) {
         addCube(intersect[0].point.x, intersect[0].point.y, intersect[0].point.z);
     }
